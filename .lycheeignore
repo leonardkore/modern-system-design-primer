@@ -8,7 +8,10 @@ https://linkedin.com/*
 
 # Medium (returns 403 to bots) - all subdomains
 https://medium.com/*
-https://*medium.com/*
+https://rakyll.medium.com/*
+
+# NGINX blog (blocks automated requests)
+https://www.nginx.com/blog/*
 
 # Netflix Tech Blog (blocks automated requests)
 https://netflixtechblog.com/*
