@@ -6,9 +6,9 @@ https://twitter.com/*
 https://x.com/*
 https://linkedin.com/*
 
-# Medium (returns 403 to bots)
-https://*.medium.com/*
+# Medium (returns 403 to bots) - all subdomains
 https://medium.com/*
+https://*medium.com/*
 
 # Netflix Tech Blog (blocks automated requests)
 https://netflixtechblog.com/*

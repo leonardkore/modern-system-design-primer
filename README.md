@@ -217,7 +217,7 @@ Replication copies data across multiple machines for durability and availability
 
 - [Designing Data-Intensive Applications, Ch. 5](https://dataintensive.net/) — Comprehensive treatment of replication
 - [How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages) — Cassandra replication at scale
-- [Vitess: YouTube's database scaling](https://vitess.io/docs/user-guides/configuration-basic/replication/) — MySQL replication at Google scale
+- [Vitess VReplication Design](https://vitess.io/docs/design-docs/vreplication/) — MySQL replication at Google scale
 
 ### TL;DR
 
@@ -1977,7 +1977,7 @@ def get_recommendations(user):
 
 - [Kubernetes Deployment Strategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) — Rolling deployments
 - [Argo Rollouts](https://argoproj.github.io/argo-rollouts/) — Progressive delivery for Kubernetes
-- [Feature Flags Best Practices](https://docs.devcycle.com/best-practices/feature-flag-best-practices) — Comprehensive feature flag guidance
+- [Feature Flags Best Practices](https://docs.getunleash.io/topics/feature-flags/feature-flag-best-practices) — Comprehensive feature flag guidance
 - [Continuous Delivery](https://continuousdelivery.com/) — Foundational concepts
 
 ### TL;DR
