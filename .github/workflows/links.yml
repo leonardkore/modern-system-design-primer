@@ -1,0 +1,43 @@
+name: Check Links
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.md'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.md'
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --accept 200,204,206,301,302,403,429
+            --exclude-mail
+            --exclude "^https://web.archive.org"
+            --exclude "^https://twitter.com"
+            --exclude "^https://x.com"
+            --timeout 30
+            '**/*.md'
+          fail: true
+
+      - name: Create Issue on Failure
+        if: failure() && github.event_name == 'schedule'
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: Weekly Link Check Found Broken Links
+          content-filepath: ./lychee/out.md
+          labels: broken-link, automated
