@@ -1,0 +1,42 @@
+# =============================================================================
+# Modern System Design Primer .gitignore
+# Single-page documentation repository
+# =============================================================================
+
+# 1. Ignore everything by default
+**/*
+
+# 2. Modern System Design Primer (2026 Edition) - Root level files
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+!CHANGELOG.md
+!CODEOWNERS
+!.gitignore
+!.lycheeignore
+!.github/
+!.github/**
+!images/
+!images/**
+
+# 3. Always re-ignore these (even if parent directories are allowed)
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+.env.*.local
+node_modules/
+__pycache__/
+target/
+dist/
+build/
+
+# ChunkHound database (regenerated per project)
+.chunkhound/
+
+# =============================================================================
+# IMPORTANT: Infrastructure (.claude/, .cupcake/, docs/, README.md, etc.)
+# exists on disk for Claude Code but is NOT tracked in git.
+# This is intentional - only code files should be committed.
+# =============================================================================

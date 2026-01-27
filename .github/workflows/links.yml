@@ -1,4 +1,4 @@
-name: Check Links
+name: Daily Link Check
 
 on:
   push:
@@ -10,34 +10,99 @@ on:
     paths:
       - '**/*.md'
   schedule:
-    - cron: '0 0 * * 0'  # Weekly on Sunday
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
   workflow_dispatch:
 
 jobs:
   check-links:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Check Links
+        id: link-check
         uses: lycheeverse/lychee-action@v1
         with:
           args: >-
             --verbose
             --no-progress
-            --accept 200,204,206,301,302,403,429
+            --accept 200,204,206,301,302
             --exclude-mail
-            --exclude "^https://web.archive.org"
-            --exclude "^https://twitter.com"
-            --exclude "^https://x.com"
             --timeout 30
+            --max-retries 3
+            --max-concurrency 10
             '**/*.md'
-          fail: true
+          fail: false
+          output: ./link-report.md
 
-      - name: Create Issue on Failure
-        if: failure() && github.event_name == 'schedule'
+      # Slack notification on EVERY run (success or failure)
+      - name: Notify Slack
+        if: always() && github.event_name == 'schedule'
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "${{ steps.link-check.outputs.exit_code == '0' && '✅ Link Check Passed' || '❌ Broken Links Found' }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n${{ github.repository }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Status:*\n${{ steps.link-check.outputs.exit_code == '0' && 'All links valid' || 'Issues detected' }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Full Report>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      # Find existing open issue (to update instead of creating duplicates)
+      - name: Find Existing Issue
+        if: steps.link-check.outputs.exit_code != 0
+        uses: micalevisk/last-issue-action@v2
+        id: last_issue
+        with:
+          state: open
+          labels: broken-link, automated
+
+      # Create or update issue when broken links found
+      - name: Create or Update Issue
+        if: steps.link-check.outputs.exit_code != 0
         uses: peter-evans/create-issue-from-file@v4
         with:
-          title: Weekly Link Check Found Broken Links
-          content-filepath: ./lychee/out.md
+          title: Broken Links Detected
+          content-filepath: ./link-report.md
           labels: broken-link, automated
+          issue-number: ${{ steps.last_issue.outputs.issue-number }}
+
+      # Auto-close issue when all links are fixed
+      - name: Close Issue if Fixed
+        if: steps.link-check.outputs.exit_code == 0
+        uses: peter-evans/close-issue@v3
+        with:
+          issue-number: ${{ steps.last_issue.outputs.issue-number }}
+          comment: All links are now valid. Closing automatically.
+        continue-on-error: true  # Don't fail if no issue exists

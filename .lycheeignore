@@ -1,0 +1,25 @@
+# .lycheeignore - Links excluded from lychee link checker
+# https://lychee.cli.rs/usage/config/#config-file
+
+# Rate-limited social media sites (check manually if needed)
+https://twitter.com/*
+https://x.com/*
+https://linkedin.com/*
+
+# Archive.org (often slow, rate limits aggressively)
+https://web.archive.org/*
+
+# Example/placeholder domains in documentation
+https://example.com/*
+https://your-domain.com/*
+https://yourdomain.com/*
+http://example.com/*
+
+# Localhost references (expected to fail in CI)
+http://localhost:*
+https://localhost:*
+http://127.0.0.1:*
+https://127.0.0.1:*
+
+# GitHub edit links (requires auth, always returns 404 in CI)
+https://github.com/.*/edit/.*
