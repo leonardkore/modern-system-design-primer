@@ -177,7 +177,7 @@ The relationship isn't linear. Queueing theory shows that as utilization approac
 
 - [Latency Numbers Every Programmer Should Know](https://gist.github.com/jboner/2841832) — Jeff Dean's classic reference (see our [updated version](#latency-numbers-every-engineer-should-know))
 - [The Tail at Scale](https://research.google/pubs/pub40801/) — Google's paper on managing tail latency
-- [Little's Law and its application](https://www.johndcook.com/blog/2009/01/30/littles-law/) — Practical explanation with examples
+- [Avoiding Insurmountable Queue Backlogs](https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/) — Amazon's practical application of Little's Law
 
 ### TL;DR
 
@@ -217,7 +217,7 @@ Replication copies data across multiple machines for durability and availability
 
 - [Designing Data-Intensive Applications, Ch. 5](https://dataintensive.net/) — Comprehensive treatment of replication
 - [How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages) — Cassandra replication at scale
-- [Vitess: YouTube's database scaling](https://vitess.io/docs/concepts/replication/) — MySQL replication at Google scale
+- [Vitess: YouTube's database scaling](https://vitess.io/docs/user-guides/configuration-basic/replication/) — MySQL replication at Google scale
 
 ### TL;DR
 
@@ -257,7 +257,7 @@ Partitioning (sharding) splits data across multiple machines. Each partition hol
 
 - [Amazon Dynamo Paper](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf) — Foundational paper on consistent hashing and partitioning
 - [How Figma scaled to multiple databases](https://www.figma.com/blog/how-figma-scaled-to-multiple-databases/) — Practical sharding story
-- [Vitess: Sharding YouTube's MySQL](https://vitess.io/docs/concepts/sharding/) — Sharding middleware approach
+- [Vitess: Sharding YouTube's MySQL](https://vitess.io/docs/concepts/shard/) — Sharding middleware approach
 
 ### TL;DR
 
@@ -676,7 +676,7 @@ if (['DE', 'FR', 'IT', 'ES'].includes(country)) {
 
 - [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/) — Edge computing platform
 - [Vercel Edge Functions](https://vercel.com/docs/functions/edge-functions) — Edge runtime for Next.js
-- [Edge Computing Patterns](https://martinfowler.com/articles/patterns-of-distributed-systems/edge-compute.html) — Fowler's distributed systems patterns
+- [Edge Computing Patterns](https://martinfowler.com/articles/patterns-of-distributed-systems/) — Fowler's distributed systems patterns
 
 ### TL;DR
 
@@ -1977,7 +1977,7 @@ def get_recommendations(user):
 
 - [Kubernetes Deployment Strategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) — Rolling deployments
 - [Argo Rollouts](https://argoproj.github.io/argo-rollouts/) — Progressive delivery for Kubernetes
-- [Feature Flags Best Practices](https://launchdarkly.com/blog/feature-flags-best-practices/) — LaunchDarkly's guidance
+- [Feature Flags Best Practices](https://docs.devcycle.com/best-practices/feature-flag-best-practices) — Comprehensive feature flag guidance
 - [Continuous Delivery](https://continuousdelivery.com/) — Foundational concepts
 
 ### TL;DR

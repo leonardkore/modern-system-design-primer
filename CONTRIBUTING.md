@@ -30,7 +30,7 @@ This primer speaks to working engineers building production systems. Write as if
 | Emphasis | Italics only (reserve bold for callout headers) | *eventual consistency* |
 | Commas | Oxford comma always | "latency, throughput, and availability" |
 | Em dashes | No spaces | "the tradeoff—latency for durability—matters" |
-| Links | 2-4 words; never "click here" | "[Raft paper](url)" not "[click here](url)" |
+| Links | 2-4 words; never "click here" | "[Raft paper](https://example.com)" not "[click here](https://example.com)" |
 
 ## Content Structure
 
@@ -56,8 +56,8 @@ Every topic follows a three-tier structure with a TL;DR summary.
 ### Going Deeper
 
 <!-- 3-5 links, ordered foundational → advanced, then by date (newer first) -->
-- [Primary source](url) — Brief description
-- [Engineering blog](url) | [archive](archive.org-url)
+- [Primary source](https://example.com) — Brief description
+- [Engineering blog](https://example.com) | [archive](https://web.archive.org/example)
 
 ### TL;DR
 
