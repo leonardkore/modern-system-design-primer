@@ -30,13 +30,22 @@ jobs:
             --verbose
             --no-progress
             --accept 200,204,206,301,302
-            --exclude-mail
             --timeout 30
             --max-retries 3
             --max-concurrency 10
             '**/*.md'
           fail: false
           output: ./link-report.md
+
+      # Check if there are errors in the report
+      - name: Check for errors
+        id: check-errors
+        run: |
+          if grep -q "🚫 Errors     | 0" ./link-report.md; then
+            echo "has_errors=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_errors=true" >> $GITHUB_OUTPUT
+          fi
 
       # Slack notification on scheduled and manual runs
       - name: Notify Slack
@@ -50,7 +59,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "${{ steps.link-check.outputs.exit_code == '0' && '✅ Link Check Passed' || '❌ Broken Links Found' }}"
+                    "text": "${{ steps.check-errors.outputs.has_errors == 'false' && '✅ Link Check Passed' || '❌ Broken Links Found' }}"
                   }
                 },
                 {
@@ -62,7 +71,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Status:*\n${{ steps.link-check.outputs.exit_code == '0' && 'All links valid' || 'Issues detected' }}"
+                      "text": "*Status:*\n${{ steps.check-errors.outputs.has_errors == 'false' && 'All links valid' || 'Issues detected' }}"
                     }
                   ]
                 },
@@ -90,7 +99,7 @@ jobs:
 
       # Create or update issue when broken links found
       - name: Create or Update Issue
-        if: steps.link-check.outputs.exit_code != '0'
+        if: steps.check-errors.outputs.has_errors == 'true'
         uses: peter-evans/create-issue-from-file@v4
         with:
           title: Broken Links Detected
@@ -100,7 +109,7 @@ jobs:
 
       # Auto-close issue when all links are fixed
       - name: Close Issue if Fixed
-        if: steps.link-check.outputs.exit_code == '0' && steps.last_issue.outputs.issue-number != ''
+        if: steps.check-errors.outputs.has_errors == 'false' && steps.last_issue.outputs.issue-number != ''
         uses: peter-evans/close-issue@v3
         with:
           issue-number: ${{ steps.last_issue.outputs.issue-number }}
